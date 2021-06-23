@@ -6,17 +6,17 @@ Project to studing Node.JS with #Rocketseat #nlwTogether
 
 - Cadastro de usuário
 
-[ ] Não é permitido cadastrar mais de um usuário com o mesmo e-mail
+[ x ] Não é permitido cadastrar mais de um usuário com o mesmo e-mail
 
-[ ] Não é permitido cadastrar usuário sem e-mail
+[ x ] Não é permitido cadastrar usuário sem e-mail
 
 - Cadastro de TAG
 
-[ ] Não é permito cadastrar mais de uma Tag com o mesmo nome
+[ x ] Não é permito cadastrar mais de uma Tag com o mesmo nome
 
-[ ] Não é permitido cadastrar Tag sem nome
+[ x ] Não é permitido cadastrar Tag sem nome
 
-[ ] somente Administradores podem cadastrar uma Tag
+[ x ] somente Administradores podem cadastrar uma Tag
 
 Cadastro de Elogios
 
@@ -163,3 +163,69 @@ yarn add @types/uuid -D
 Notes:
 - Qual a funcionalidade das MIGRATIONS?
   - Definir modelos das entidades na aplicação
+
+# Class #03
+- O que são middlewares: São camadas que estão entre a nossa request e nossa response; Ou seja, são camadas capazes de "traduzir" e/ou intermediar uma request/response.
+- Exemplo de um middleware:
+```ts
+const app = express();
+
+app.use(express.json());
+app.use(router);
+```
+
+# Diagram
+
+## Controller -> Service (throw new exception)
+- O Controller é a camada acima da Service, ou seja; Service será requisitada pelo Controller. É o controller que deverá tratar as exceptions lançadas pelo service.
+
+## Server -> Routes -> Controller -> Service (throw new exception)
+- Neste caso, a camada superior é o Server... O Controller é a camada acima da Service;
+- Neste novo modelo o Server será o responsável por tratar as exceptions lançadas pelo service, evitando que o programador esqueça de fazer um tratamento usando o try catch em algum local do código.
+
+
+```ts
+   /**
+   * Modelo de tratamento de erros
+   */
+    try {
+      const { name, email, admin } = request.body;
+      const createUserService = new CreateUserService();
+      const user = await createUserService.execute({ name, email, admin });
+
+      return response.json(user);
+    }
+    catch (_error) {
+      return response.status(404).json({ error: _error.message });
+    }
+```
+
+# Ordem Clean Code (No MVC)
+## Migration (create, run) -> Entities -> Repositories -> Services -> Controller
+- 1. Migration (create, run)
+- 2. Entities
+- 3. Repositories
+- 4. Services
+- 5. Controller
+
+## Bibliotecas necessárias
+
+- Instala o Express-Async-Errors, e efetuar um import...
+```cmd
+yarn add express-async-errors
+```
+```ts
+import "express-async-errors";
+```
+
+## Criando migrations Tags
+```cmd
+yarn typeorm migration:create -n CreateTags
+```
+
+## Notes
+- Normalmente a criação de recursos, é nomeada no plural; Ex: "/users"
+```ts
+router.post("/users", createUserController.handle);
+router.post("/tags", createTagController.handle);
+```
