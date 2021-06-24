@@ -229,3 +229,21 @@ yarn typeorm migration:create -n CreateTags
 router.post("/users", createUserController.handle);
 router.post("/tags", createTagController.handle);
 ```
+
+# Class #04
+
+Instalando a biblioteca JWT (Jason Web Token - jwt.io)
+
+```cmd
+yarn add jsonwebtoken
+yarn add @types/jsonwebtoken - D
+yarn typeorm migration:create -n AlterUserAddPassword
+yarn add bcryptjs
+yarn add @types/bcryptjs -D
+```
+
+continue...
+
+```cmd
+yarn typeorm migration:create -n CreateCompliments
+```
