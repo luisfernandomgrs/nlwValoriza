@@ -4,18 +4,23 @@ import { CreateTagController } from "./controllers/CreateTagController";
 import { ensureAdmin } from "./middlewares/ensureAdmin";
 import { AuthenticateUserController } from "./controllers/AuthenticateUserController";
 import { CreateComplimentController } from "./controllers/CreateComplimentController";
+import { ensureAuthenticated } from "./middlewares/ensureAuthenticated";
 
 const router = Router();
 
-const createUserController = new CreateUserController();
-const createTagController = new CreateTagController();
 const authenticateUserController = new AuthenticateUserController();
 const createComplimentController = new CreateComplimentController();
+const createUserController = new CreateUserController();
+const createTagController = new CreateTagController();
 
 //router.get("/users", (request, response) => { return response.send("Olá") });
+console.log("01");
+router.post("/tags", ensureAuthenticated, ensureAdmin, createTagController.handle);
+console.log("02");
 router.post("/users", createUserController.handle);
-router.post("/tags", ensureAdmin, createTagController.handle);
+console.log("03");
 router.post("/login", authenticateUserController.handle);
+console.log("04");
 router.post("/compliments", createComplimentController.handle);
 
 export { router };
