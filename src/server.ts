@@ -16,21 +16,21 @@ app.use(router);
  * 
  * Este novo middleware, é importante inserir após as rotas, definidas em: app.use(router);
  */
-app.use((_error: Error, request: Request, response: Response, next: NextFunction) => {
-  /**
-   * Por padrão o Express não consegue tratar requisições Async...
-   * Onde é necessário a instalação de uma biblioteca para isso; Ex: express-async-errors
-   */
-  if (_error instanceof Error) {
-    response.status(400).json({
-      error: _error.message
-    });
-  };
+app.use(
+  (err: Error, request: Request, response: Response, next: NextFunction) => {
+    /**
+     * Por padrão o Express não consegue tratar requisições Async...
+     * Onde é necessário a instalação de uma biblioteca para isso; Ex: express-async-errors
+     */
+    if (err instanceof Error) {
+      response.status(400).json({
+        error: err.message
+      });
+    };
 
-  return response.status(500).json({
-    status: "error",
-    message: "Internal Server Error"
-  });
-});
+    console.log(err);
+    return response.status(500).end();
+  }
+);
 
 app.listen(myPortAccess, () => console.log(`Server is running | at ${myPortAccess}`))

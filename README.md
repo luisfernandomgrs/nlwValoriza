@@ -247,3 +247,10 @@ continue...
 ```cmd
 yarn typeorm migration:create -n CreateCompliments
 ```
+
+# Class #05
+
+Instalando a class-transformer
+```cmd
+yarn add class-transformer
+```
